@@ -1,7 +1,7 @@
 package com.shopspreeng.mutlicoinwallet.data.database
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
-import android.arch.persistence.room.OnConflictStrategy.REPLACE
 
 /**
  * Created by Thadeus-APMIS on 3/24/2018.
@@ -10,13 +10,13 @@ import android.arch.persistence.room.OnConflictStrategy.REPLACE
 interface CurrencyDao {
 
     @Query("SELECT * FROM currency")
-    fun getAllCurrencies(): List<Currency>
+    fun getAllCurrencies(): LiveData<List<Currency>>
 
     @Query("SELECT * FROM currency WHERE currency = :currency")
     fun getSingleCurrency(currency: Currency)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(currencies: Currency)
+    fun bulkInsert(currencies: Currency)
 
     @Delete
     fun delete(currency: Currency)

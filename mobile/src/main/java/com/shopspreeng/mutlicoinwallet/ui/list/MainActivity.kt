@@ -1,21 +1,15 @@
 package com.shopspreeng.mutlicoinwallet.ui.list
 
-import android.support.v7.app.AppCompatActivity
+import android.arch.lifecycle.LifecycleActivity
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.shopspreeng.mutlicoinwallet.MultiCoinWallet
 import com.shopspreeng.mutlicoinwallet.R
-import org.json.JSONObject
+import com.shopspreeng.mutlicoinwallet.data.network.CurrencySyncIntentService
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
-
-    val mInstance = MultiCoinWallet().getInstance()
+class MainActivity : LifecycleActivity(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         Toast.makeText(this, "Yea I got it", LENGTH_SHORT).show()
@@ -25,18 +19,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var jaRequest = JsonObjectRequest(Request.Method.GET,
-                "https://api.coinmarketcap.com/v1/ticker/",null,
-                Response.Listener<JSONObject> {
-                    response -> Log.v("Response", response.toString())
-                },
-                Response.ErrorListener {
-                    error ->  Log.v("Error", error.message)
-                })
-
-
-        //mInstance.addToRequestQueue(jaRequest, "CAP")
-
+        startService(Intent(applicationContext, CurrencySyncIntentService::class.java))
 
     }
 }

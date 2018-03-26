@@ -15,10 +15,10 @@ class CurrencyDetailActivity : LifecycleActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_currency_detail)
 
-        val mViewModel = ViewModelProviders.of(this).get(CurrencyDetailViewHolder::class.java)
+        val mViewModel = ViewModelProviders.of(this).get(CurrencyDetailViewModel::class.java)
 
         mViewModel.getCurrency().observe(this, Observer {
-            toast(CurrencyDetailViewHolder().mCurrency)
+            toast(CurrencyDetailViewModel().mCurrency)
         })
 
     }

@@ -7,7 +7,7 @@ import com.shopspreeng.mutlicoinwallet.data.database.Currency
 /**
  * Created by Thadeus-APMIS on 3/24/2018.
  */
-class CurrencyDetailViewHolder : ViewModel() {
+class CurrencyDetailViewModel : ViewModel() {
 
     val mCurrency= MutableLiveData<Currency>()
 

@@ -1,46 +1,54 @@
 package com.shopspreeng.mutlicoinwallet
-
-import android.app.Application
-import android.content.ContentValues.TAG
-import android.text.TextUtils
-import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.Volley
+import android.os.Handler
+import android.os.Looper
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 /**
  * Created by Thadeus-APMIS on 3/23/2018.
  */
-class MultiCoinWallet : Application() {
+class MultiCoinWallet  {
 
-    private var mInstance: MultiCoinWallet? = null
+    private val LOCK = Any()
+    private var sInstance: MultiCoinWallet? = null
+    private var diskIO: Executor? = null
+    private var mainThread: Executor? = null
+    private var networkIO: Executor? = null
 
-    override fun onCreate() {
-        super.onCreate()
-        mInstance = this
+    constructor(diskIO: Executor, networkIO: Executor, mainThread: Executor) {
+        this.diskIO = diskIO
+        this.networkIO = networkIO
+        this.mainThread = mainThread
     }
 
-    @Synchronized
     fun getInstance(): MultiCoinWallet? {
-        return mInstance
+        if (sInstance == null) {
+            synchronized(LOCK) {
+                sInstance = MultiCoinWallet(Executors.newSingleThreadExecutor(),
+                        Executors.newFixedThreadPool(3),
+                        MainThreadExecutor())
+            }
+        }
+        return sInstance
     }
 
-    val requestQueue: RequestQueue by lazy {
-        Volley.newRequestQueue(applicationContext)
+    fun diskIO(): Executor? {
+        return diskIO
     }
 
-    fun <T> addToRequestQueue(request: Request<T>, tag: String) {
-        request.tag = if (TextUtils.isEmpty(tag)) TAG else tag
-        requestQueue?.add(request)
+    fun mainThread(): Executor? {
+        return mainThread
     }
 
-    fun <T> addToRequestQueue(request: Request<T>) {
-        request.tag = TAG
-        requestQueue?.add(request)
+    fun networkIO(): Executor? {
+        return networkIO
     }
 
-    fun cancelPendingRequests(tag: Any) {
-        if (requestQueue != null) {
-            requestQueue!!.cancelAll(tag)
+    private class MainThreadExecutor : Executor {
+        private val mainThreadHandler = Handler(Looper.getMainLooper())
+
+        override fun execute(command: Runnable) {
+            mainThreadHandler.post(command)
         }
     }
 
