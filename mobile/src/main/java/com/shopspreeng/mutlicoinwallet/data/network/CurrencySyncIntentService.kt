@@ -11,13 +11,13 @@ import com.shopspreeng.mutlicoinwallet.utilities.InjectorUtils
 
 class CurrencySyncIntentService: IntentService("CurrencySyncIntentService") {
 
-    private val LOG_TAG = CurrencySyncIntentService::class.java!!.simpleName
+    private val LOG_TAG = CurrencySyncIntentService::class.java.simpleName
 
     override fun onHandleIntent(p0: Intent?) {
         Log.d(LOG_TAG, "Intent service started")
-        val currencyDataSource: CurrencyDataSource? = InjectorUtils().provideNetworkData(applicationContext)
-                ?.getInstance()
-        currencyDataSource?.fetchCurrencies()
+        val currencyNetworkDataSource: CurrencyNetworkDataSource? = InjectorUtils().provideNetworkData(applicationContext)?.getInstance()
+
+        currencyNetworkDataSource?.fetchCurrencies()
     }
 
 }

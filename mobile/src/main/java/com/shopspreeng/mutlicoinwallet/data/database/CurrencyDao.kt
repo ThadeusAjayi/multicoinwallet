@@ -12,11 +12,11 @@ interface CurrencyDao {
     @Query("SELECT * FROM currency")
     fun getAllCurrencies(): LiveData<List<Currency>>
 
-    @Query("SELECT * FROM currency WHERE currency = :currency")
-    fun getSingleCurrency(currency: Currency)
+  /*  @Query("SELECT * FROM currency WHERE currency = :currency")
+    fun getSingleCurrency(currency: Currency): LiveData<Currency>*/
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun bulkInsert(currencies: Currency)
+    fun bulkInsert(currencies: Array<Currency>?)
 
     @Delete
     fun delete(currency: Currency)

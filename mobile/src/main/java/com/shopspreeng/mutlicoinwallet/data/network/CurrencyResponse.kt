@@ -1,16 +1,15 @@
 package com.shopspreeng.mutlicoinwallet.data.network
 
-import android.support.annotation.NonNull
 import com.shopspreeng.mutlicoinwallet.data.database.Currency
 
 /**
  * Created by Thadeus-APMIS on 3/26/2018.
  */
-class CurrencyResponse(@NonNull currency: String) {
+class CurrencyResponse(currency: Array<Currency>?) {
 
-    val mCurrency: String? = null
+    private val mCurrency : Array<Currency>? = currency
 
-    fun getCurrency(): String? {
+    fun getCurrency(): Array<Currency>? {
         return mCurrency
     }
 

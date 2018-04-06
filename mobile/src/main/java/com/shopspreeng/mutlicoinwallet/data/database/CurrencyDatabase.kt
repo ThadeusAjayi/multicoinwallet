@@ -9,7 +9,6 @@ import android.content.Context
  */
 
 @Database(entities = arrayOf(Currency::class), version = 1)
-@TypeConverters(CurrencyConverter::class)
 
 abstract class CurrencyDatabase: RoomDatabase() {
 
@@ -22,8 +21,8 @@ abstract class CurrencyDatabase: RoomDatabase() {
         fun getInstance(context: Context): CurrencyDatabase? {
             if (INSTANCE == null) {
                 synchronized(CurrencyDatabase::class) {
-                    INSTANCE = Room.databaseBuilder(context.applicationContext,
-                            CurrencyDatabase::class.java, DATABASE_NAME)
+                    INSTANCE = Room.databaseBuilder<CurrencyDatabase>(context.applicationContext,
+                            CurrencyDatabase::class.java, CurrencyDatabase.DATABASE_NAME)
                             .build()
                 }
             }

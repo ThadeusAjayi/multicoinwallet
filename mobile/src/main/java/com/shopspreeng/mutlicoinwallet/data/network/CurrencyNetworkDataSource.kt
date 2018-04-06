@@ -3,20 +3,25 @@ package com.shopspreeng.mutlicoinwallet.data.network
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
+import android.content.Intent
 import android.util.Log
-import com.google.gson.Gson
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.shopspreeng.mutlicoinwallet.MultiCoinWallet
 import com.shopspreeng.mutlicoinwallet.data.database.Currency
+import org.json.JSONArray
 import java.util.concurrent.TimeUnit
 
 /**
  * Created by Thadeus-APMIS on 3/26/2018.
  */
 
-class CurrencyDataSource(context: Context, multiCoinExecutors: MultiCoinWallet) {
+class CurrencyNetworkDataSource(context: Context, multiCoinExecutors: MultiCoinWallet) {
     // The number of days we want our API to return, set to 14 days or two weeks
     val NUM_DAYS = 14
-    private val LOG_TAG = CurrencyDataSource::class.java!!.getSimpleName()
+    private val LOG_TAG = CurrencyNetworkDataSource::class.java.simpleName
 
     // Interval at which to sync with the weather. Use TimeUnit for convenience, rather than
     // writing out a bunch of multiplication ourselves and risk making a silly mistake.
@@ -27,22 +32,29 @@ class CurrencyDataSource(context: Context, multiCoinExecutors: MultiCoinWallet) 
 
     // For Singleton instantiation
     private val LOCK = Any()
-    private var sInstance: CurrencyDataSource? = null
-    private val mContext = context
+    private var sInstance: CurrencyNetworkDataSource? = null
 
     private val mExecutors = multiCoinExecutors
 
-    private val mDownloadedCoinCurrency: LiveData<Currency>? = null
+    private val mDownloadedCoinCurrency: MutableLiveData<Array<Currency>>? = MutableLiveData()
 
-    fun getCurrencyRates(): LiveData<Currency>? {
+    val CURRENCY_RATES = "https://api.coinmarketcap.com/v1/ticker/?limit=10"
+
+    val BASE_URL = CURRENCY_RATES
+
+    var applicationContext = context
+
+    val requestQueue = Volley.newRequestQueue(context)
+
+    fun getCurrencies(): LiveData<Array<Currency>>? {
         return mDownloadedCoinCurrency
     }
 
-    fun getInstance(): CurrencyDataSource? {
+    fun getInstance(): CurrencyNetworkDataSource? {
         Log.d(LOG_TAG, "Getting the network data source")
         if (sInstance == null) {
             synchronized(LOCK) {
-                sInstance = CurrencyDataSource(mContext, mExecutors)
+                sInstance = CurrencyNetworkDataSource(applicationContext, mExecutors)
                 Log.d(LOG_TAG, "Made new network data source")
             }
         }
@@ -50,12 +62,17 @@ class CurrencyDataSource(context: Context, multiCoinExecutors: MultiCoinWallet) 
     }
 
     fun fetchCurrencies() {
-        Log.v(LOG_TAG, "Fetch Weather Started")
+        Log.v(LOG_TAG, "Fetch Coin Started")
         mExecutors.networkIO()?.execute({
-            val currencyResponse = NetworkUtils(mContext).getCurrencies()
 
-            Log.v("Currency Response", currencyResponse.toString())
+            var response = CurrencyResponse(NetworkUtils(applicationContext).getCurrencies())
+
+            mDownloadedCoinCurrency?.postValue(response.getCurrency())
         })
+    }
+
+    fun startFetchCurrencyService() {
+        applicationContext?.startService(Intent(applicationContext, CurrencySyncIntentService::class.java))
     }
 
 }

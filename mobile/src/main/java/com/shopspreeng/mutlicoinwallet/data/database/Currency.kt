@@ -12,7 +12,7 @@ import android.arch.persistence.room.PrimaryKey
  * Single currency entry
  */
 @Entity(tableName = "currency")
-data class Currency(@PrimaryKey(autoGenerate = true) var _id: Long?,
+data class Currency(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "_id")var _id: Long?,
                     @ColumnInfo(name = "currencyId")val id: String?,
                     @ColumnInfo(name = "name")val name: String?,
                     @ColumnInfo(name = "symbol")val symbol: String?,
@@ -26,6 +26,4 @@ data class Currency(@PrimaryKey(autoGenerate = true) var _id: Long?,
                     @ColumnInfo(name = "percent_change_1h")val percent_change_1h: String?,
                     @ColumnInfo(name = "percent_change_24h")val percent_change_24h: String?,
                     @ColumnInfo(name = "percent_change_7d")val percent_change_7d: String?,
-                    @ColumnInfo(name = "last_updated")val last_updated: String?) {
-    constructor(): this(null,"","","","", "", "", "", "", "", "","","", "", "")
-}
+                    @ColumnInfo(name = "last_updated")val last_updated: String?)

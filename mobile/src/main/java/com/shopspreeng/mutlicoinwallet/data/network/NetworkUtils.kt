@@ -1,5 +1,6 @@
 package com.shopspreeng.mutlicoinwallet.data.network
 
+import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.util.Log
 import com.android.volley.Request
@@ -28,26 +29,22 @@ class NetworkUtils(context: Context) {
 
     val BASE_URL = CURRENCY_RATES
 
-    var applicationContext: Context? = context
+    val requestQueue = Volley.newRequestQueue(context)
 
-    val requestQueue = Volley.newRequestQueue(applicationContext)
-
-    fun getCurrencies() : List<Currency>? {
-        var currencyResult: List<Currency>? = listOf()
+    fun getCurrencies(): Array<Currency>? {
+        var currencyResult: Array<Currency>? = arrayOf()
 
         val stringRequest = StringRequest(Request.Method.GET, BASE_URL,
                 Response.Listener<String> { response ->
                     val jar = JSONArray(response)
 
                     currencyResult = NetworkParser().fromJson(jar)
-                    Log.v("Currency Result", currencyResult.toString())
 
                 },
                 Response.ErrorListener { error ->
                     Log.v("Error", error.message)
                 })
         requestQueue.add(stringRequest)
-
         return currencyResult
     }
 

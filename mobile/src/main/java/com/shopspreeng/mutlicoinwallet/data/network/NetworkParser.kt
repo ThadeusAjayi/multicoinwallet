@@ -1,5 +1,6 @@
 package com.shopspreeng.mutlicoinwallet.data.network
 
+import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -15,17 +16,18 @@ import java.util.*
 
 class NetworkParser {
 
-    fun fromJson (jsonArray: JSONArray): List<Currency> {
+    fun fromJson (jsonArray: JSONArray): Array<Currency>? {
 
-        var currencyList: MutableList<Currency> = mutableListOf()
+        var currencies: Array<Currency>? = null
+        Log.v("array length", jsonArray.length().toString())
 
         for (i in 0..(jsonArray.length() - 1)) {
             var quickCurrency = jsonArray.get(i)
-            var ccccc: Currency = Gson().fromJson(quickCurrency.toString(), Currency::class.java)
-            currencyList.add(ccccc)
+            var ccccc = Gson().fromJson(quickCurrency.toString(), Currency::class.java)
+            currencies?.set(i, ccccc)
         }
 
-        return currencyList
+        return currencies
     }
 
 }
