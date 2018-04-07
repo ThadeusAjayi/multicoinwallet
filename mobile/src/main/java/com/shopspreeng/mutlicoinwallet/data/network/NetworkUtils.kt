@@ -31,8 +31,8 @@ class NetworkUtils(context: Context) {
 
     val requestQueue = Volley.newRequestQueue(context)
 
-    fun getCurrencies(): Array<Currency>? {
-        var currencyResult: Array<Currency>? = arrayOf()
+    fun getCurrencies(): List<Currency>? {
+        var currencyResult: List<Currency>? = arrayListOf()
 
         val stringRequest = StringRequest(Request.Method.GET, BASE_URL,
                 Response.Listener<String> { response ->

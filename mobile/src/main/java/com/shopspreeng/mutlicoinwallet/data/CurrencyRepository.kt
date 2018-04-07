@@ -22,7 +22,7 @@ class CurrencyRepository(currencyDao: CurrencyDao, currencyNetworkDataSource: Cu
     private var mInitialized = false
 
     init {
-        val networkData: LiveData<Array<Currency>>? = mCurrencyNetworkDataSource.getCurrencies()
+        val networkData: LiveData<List<Currency>>? = mCurrencyNetworkDataSource.getCurrencies()
         networkData?.observeForever({currencies ->
             mExecutors.diskIO()?.execute({
                 mCurrencyDao.bulkInsert(currencies)

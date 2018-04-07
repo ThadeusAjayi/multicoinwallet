@@ -16,15 +16,15 @@ import java.util.*
 
 class NetworkParser {
 
-    fun fromJson (jsonArray: JSONArray): Array<Currency>? {
+    fun fromJson (jsonArray: JSONArray): List<Currency>? {
 
-        var currencies: Array<Currency>? = null
+        var currencies: MutableList<Currency> = arrayListOf()
         Log.v("array length", jsonArray.length().toString())
 
         for (i in 0..(jsonArray.length() - 1)) {
             var quickCurrency = jsonArray.get(i)
             var ccccc = Gson().fromJson(quickCurrency.toString(), Currency::class.java)
-            currencies?.set(i, ccccc)
+            currencies.add(ccccc)
         }
 
         return currencies

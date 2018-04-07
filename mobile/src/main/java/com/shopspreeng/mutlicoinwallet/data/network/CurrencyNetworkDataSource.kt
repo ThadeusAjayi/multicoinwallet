@@ -36,7 +36,7 @@ class CurrencyNetworkDataSource(context: Context, multiCoinExecutors: MultiCoinW
 
     private val mExecutors = multiCoinExecutors
 
-    private val mDownloadedCoinCurrency: MutableLiveData<Array<Currency>>? = MutableLiveData()
+    private val mDownloadedCoinCurrency: MutableLiveData<List<Currency>>? = MutableLiveData()
 
     val CURRENCY_RATES = "https://api.coinmarketcap.com/v1/ticker/?limit=10"
 
@@ -46,7 +46,7 @@ class CurrencyNetworkDataSource(context: Context, multiCoinExecutors: MultiCoinW
 
     val requestQueue = Volley.newRequestQueue(context)
 
-    fun getCurrencies(): LiveData<Array<Currency>>? {
+    fun getCurrencies(): LiveData<List<Currency>>? {
         return mDownloadedCoinCurrency
     }
 

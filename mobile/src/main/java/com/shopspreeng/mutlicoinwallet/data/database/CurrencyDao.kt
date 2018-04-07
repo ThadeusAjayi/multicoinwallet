@@ -16,7 +16,7 @@ interface CurrencyDao {
     fun getSingleCurrency(currency: Currency): LiveData<Currency>*/
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun bulkInsert(currencies: Array<Currency>?)
+    fun bulkInsert(currencies: List<Currency>?)
 
     @Delete
     fun delete(currency: Currency)

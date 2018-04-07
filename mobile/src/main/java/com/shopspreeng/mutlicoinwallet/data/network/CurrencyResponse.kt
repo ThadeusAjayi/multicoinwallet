@@ -5,11 +5,11 @@ import com.shopspreeng.mutlicoinwallet.data.database.Currency
 /**
  * Created by Thadeus-APMIS on 3/26/2018.
  */
-class CurrencyResponse(currency: Array<Currency>?) {
+class CurrencyResponse(currency: List<Currency>?) {
 
-    private val mCurrency : Array<Currency>? = currency
+    private val mCurrency : List<Currency>? = currency
 
-    fun getCurrency(): Array<Currency>? {
+    fun getCurrency(): List<Currency>? {
         return mCurrency
     }
 
