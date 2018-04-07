@@ -13,11 +13,11 @@ import java.util.concurrent.Executor
  */
 class InjectorUtils {
 
-    fun provideRepository(context: Context): CurrencyRepository {
+    fun provideRepository(context: Context): CurrencyRepository? {
         val currencyDatabase = CurrencyDatabase.getInstance(context.applicationContext)
         val multiCoinWallet = MultiCoinWallet(Executor {  }, Executor {  }, Executor {  }).getInstance()!!
         val currencyDataSource = CurrencyNetworkDataSource(context, multiCoinWallet)
-        return CurrencyRepository(currencyDatabase!!.CurrencyDao(), currencyDataSource, multiCoinWallet)
+        return CurrencyRepository(currencyDatabase!!.CurrencyDao(), currencyDataSource, multiCoinWallet).getInstance()
     }
 
     fun provideNetworkData(context: Context): CurrencyNetworkDataSource? {

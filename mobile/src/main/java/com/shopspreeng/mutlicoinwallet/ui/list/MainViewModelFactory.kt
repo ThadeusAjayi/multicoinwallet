@@ -7,7 +7,7 @@ import com.shopspreeng.mutlicoinwallet.data.CurrencyRepository
 /**
  * Created by Thadeus-APMIS on 3/25/2018.
  */
-class MainViewModelFactory (currencyRepository: CurrencyRepository): ViewModelProvider.NewInstanceFactory() {
+class MainViewModelFactory (currencyRepository: CurrencyRepository?): ViewModelProvider.NewInstanceFactory() {
 
     val mCurrencyRepository = currencyRepository
 

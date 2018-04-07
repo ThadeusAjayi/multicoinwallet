@@ -32,14 +32,12 @@ class CurrencyRepository(currencyDao: CurrencyDao, currencyNetworkDataSource: Cu
     }
 
     @Synchronized
-    fun getInstance(
-            currencyDao: CurrencyDao, currencyNetworkDataSource: CurrencyNetworkDataSource,
-            executors: MultiCoinWallet): CurrencyRepository? {
+    fun getInstance(): CurrencyRepository ?{
         Log.d(LOG_TAG, "Getting the repository")
         if (sInstance == null) {
             synchronized(LOCK) {
-                sInstance = CurrencyRepository(currencyDao, currencyNetworkDataSource,
-                        executors)
+                sInstance = CurrencyRepository(mCurrencyDao, mCurrencyNetworkDataSource,
+                        mExecutors)
                 Log.d(LOG_TAG, "Made new repository")
             }
         }
@@ -53,8 +51,8 @@ class CurrencyRepository(currencyDao: CurrencyDao, currencyNetworkDataSource: Cu
         if (mInitialized) return
         mInitialized = true
 
-        mExecutors!!.diskIO()?.execute {
-            mCurrencyNetworkDataSource?.startFetchCurrencyService()
+        mExecutors.diskIO()?.execute {
+            mCurrencyNetworkDataSource.startFetchCurrencyService()
         }
     }
 
