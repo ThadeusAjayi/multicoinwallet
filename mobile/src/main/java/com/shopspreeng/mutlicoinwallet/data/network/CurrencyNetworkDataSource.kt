@@ -67,6 +67,8 @@ class CurrencyNetworkDataSource(context: Context, multiCoinExecutors: MultiCoinW
 
             var response = CurrencyResponse(NetworkUtils(applicationContext).getCurrencies())
 
+            Log.v("Response After Data", java.lang.String.valueOf(response))
+
             mDownloadedCoinCurrency?.postValue(response.getCurrency())
         })
     }

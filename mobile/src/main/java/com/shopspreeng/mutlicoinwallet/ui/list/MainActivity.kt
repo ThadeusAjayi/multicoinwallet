@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -18,7 +19,7 @@ import com.shopspreeng.mutlicoinwallet.utilities.InjectorUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.Executor
 
-class MainActivity : LifecycleActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     var mViewModel : MainViewModel? = null
 
